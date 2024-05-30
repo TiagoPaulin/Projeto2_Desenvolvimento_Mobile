@@ -3,44 +3,45 @@ package com.example.projeto2_somativa
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.projeto2_somativa.ui.theme.Projeto2_SomativaTheme
+import com.example.projeto2_somativa.view.LeaderBoard
+import com.example.projeto2_somativa.view.Menu
+import com.example.projeto2_somativa.view.Quiz
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Projeto2_SomativaTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+
+                val navController = rememberNavController()
+
+                NavHost(navController = navController, startDestination = "Menu") {
+
+                    composable(route = "Menu") {
+
+                        Menu(navController)
+
+                    }
+
+                    composable(route = "Quiz") {
+
+                        Quiz(navController)
+
+                    }
+
+                    composable(route = "LeaderBoard") {
+
+                        LeaderBoard(navController)
+
+                    }
+
                 }
+
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Projeto2_SomativaTheme {
-        Greeting("Android")
     }
 }
