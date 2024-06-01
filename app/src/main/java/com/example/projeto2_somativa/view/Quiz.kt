@@ -12,65 +12,37 @@ import com.example.projeto2_somativa.ui.theme.White
 
 @Composable
 fun Quiz(navController: NavController) {
-
-    Singleton.addQuestion("Quanto e 2 + 2?", "link", "media")
-
+    
     var lastQuestion = Singleton.getLast()
-
-    Singleton.addAnswer("2", true, lastQuestion.id)
-    Singleton.addAnswer("8", false, lastQuestion.id)
-    Singleton.addAnswer("3", false, lastQuestion.id)
-    Singleton.addAnswer("12", false, lastQuestion.id)
-
-    Singleton.addQuestion("Quanto e 4 + 4?", "link", "media")
-
-    lastQuestion = Singleton.getLast()
-
-    Singleton.addAnswer("25", false, lastQuestion.id)
-    Singleton.addAnswer("8", true, lastQuestion.id)
-    Singleton.addAnswer("30", false, lastQuestion.id)
-    Singleton.addAnswer("12", false, lastQuestion.id)
-
-    var questions = Singleton.getQuestions("media")
-
-    var answers = mutableListOf<Answer>()
-
-    questions.forEach { question ->
-
-        answers.addAll(Singleton.getAnswers(question.id))
-
+    
+    var answers = Singleton.getAnswers(lastQuestion.id)
+    
+    Column {
+        
+        Text(text = "descricao: " + lastQuestion.description + "image: " + lastQuestion.image + "Dificuldade: " + lastQuestion.difficulty)
+        
+        answers.forEach { answer ->
+            
+            Text(text = "descricao: " + answer.description + "isCorrect: " + (answer.isCorrect).toString())
+            
+        }
+        
     }
 
     Column {
 
-        questions.forEach { question ->
+        FloatingActionButton(
+            onClick = { navController.navigate("Menu") },
+            containerColor = Purple,
+            contentColor = White
+        ) {
 
-            Text(text = question.description)
-
-            answers.forEach { answer ->
-
-                Text(text = answer.description)
-
-            }
+            Text(text = "Menu")
 
         }
 
-    }
+        Text(text = "quiz")
 
-//    Column {
-//
-//        FloatingActionButton(
-//            onClick = { navController.navigate("Menu") },
-//            containerColor = Purple,
-//            contentColor = White
-//        ) {
-//
-//            Text(text = "Menu")
-//
-//        }
-//
-//        Text(text = "quiz")
-//
-//    }
+    }
 
 }
