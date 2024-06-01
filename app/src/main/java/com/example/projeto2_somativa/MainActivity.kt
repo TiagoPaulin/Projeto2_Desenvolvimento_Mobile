@@ -17,7 +17,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         Singleton.setContext(this)
-        Singleton.loadQuestionsFromJSON()
+
+//        Singleton.loadQuestionsFromJSON()
 
 
         setContent {
