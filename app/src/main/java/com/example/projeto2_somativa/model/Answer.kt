@@ -19,8 +19,8 @@ data class Answer(
 
     @PrimaryKey(autoGenerate = true)
     val answerId : Int,
-    val questionId : Int,
-    val text : String,
-    val isCorrect : Boolean
+    val description : String,
+    val isCorrect : Boolean,
+    val questionId : Int
 
 )

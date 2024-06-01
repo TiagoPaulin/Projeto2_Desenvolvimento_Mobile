@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.projeto2_somativa.model.AppDatabase
+import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.service.QuizService
 import com.example.projeto2_somativa.ui.theme.Projeto2_SomativaTheme
 import com.example.projeto2_somativa.view.LeaderBoard
@@ -17,8 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dao = AppDatabase.getInstance(application).quizDao
-        val service = QuizService(dao)
+        Singleton.setContext(this)
 
         setContent {
             Projeto2_SomativaTheme {

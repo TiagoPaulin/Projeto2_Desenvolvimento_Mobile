@@ -8,7 +8,7 @@ data class Score(
 
     @PrimaryKey(autoGenerate = true)
     val id : Int,
-    val score : Long,
-    val name : String
+    val name : String,
+    val score : Int
 
 )

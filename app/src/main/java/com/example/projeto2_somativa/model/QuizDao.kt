@@ -25,4 +25,7 @@ interface QuizDao {
     @Query("SELECT * FROM table_score ORDER BY score DESC LIMIT 10")
     fun getTopTen() : List<Score>
 
+    @Query("SELECT * FROM table_question ORDER BY id DESC LIMIT 1")
+    fun getLastQuestion() : Question
+
 }
