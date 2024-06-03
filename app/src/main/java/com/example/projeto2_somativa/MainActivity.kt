@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
                     composable(route = "Quiz") {
 
-                        Quiz(navController)
+                        Quiz(navController, "difícil")
 
                     }
 

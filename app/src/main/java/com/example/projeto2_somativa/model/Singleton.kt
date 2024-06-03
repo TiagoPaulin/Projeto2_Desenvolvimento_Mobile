@@ -36,7 +36,7 @@ object Singleton {
 
     }
 
-    fun getQuestions(difficulty : String) : List<Question> {
+    fun getQuestions(difficulty : String) : MutableList<Question> {
 
         return quizDao.getByDifficulty(difficulty)
 

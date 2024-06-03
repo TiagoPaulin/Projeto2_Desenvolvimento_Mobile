@@ -17,7 +17,7 @@ interface QuizDao {
     fun insertScore(score : Score)
 
     @Query("SELECT * FROM table_question WHERE difficulty = :difficulty")
-    fun getByDifficulty(difficulty : String) : List<Question>
+    fun getByDifficulty(difficulty : String) : MutableList<Question>
 
     @Query("SELECT * FROM table_answer WHERE questionId = :questionId")
     fun getAnswerByQuestion(questionId : Int) : List<Answer>

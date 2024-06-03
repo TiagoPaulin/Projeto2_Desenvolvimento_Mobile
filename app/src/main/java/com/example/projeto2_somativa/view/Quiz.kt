@@ -18,15 +18,22 @@ import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.example.projeto2_somativa.R
 import com.example.projeto2_somativa.model.Answer
+import com.example.projeto2_somativa.model.Question
 import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
 import com.example.projeto2_somativa.view.quizComponents.QuestionBody
+import kotlin.random.Random
 
 @Composable
-fun Quiz(navController: NavController) {
+fun Quiz(navController: NavController, difficulty : String) {
     
     var lastQuestion = Singleton.getLast()
+
+    var questions = Singleton.getQuestions(difficulty)
+    var question = getRandomQuestion(questions)
+    questions.remove(question)
+
 
     Column (
 
@@ -39,18 +46,17 @@ fun Quiz(navController: NavController) {
 
     ){
 
-//        FloatingActionButton(
-//            onClick = { navController.navigate("Menu") },
-//            containerColor = Purple,
-//            contentColor = White
-//        ) {
-//
-//            Text(text = "Menu")
-//
-//        }
-
-        QuestionBody(question = lastQuestion)
+        QuestionBody(question = question)
 
     }
+
+}
+
+fun getRandomQuestion(questions : MutableList<Question>): Question {
+
+    var index = Random.nextInt(questions.size)
+    var question = questions[index]
+
+    return question
 
 }

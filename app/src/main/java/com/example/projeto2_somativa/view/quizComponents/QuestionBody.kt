@@ -1,6 +1,8 @@
 package com.example.projeto2_somativa.view.quizComponents
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,11 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,13 +29,18 @@ import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
 
 @Composable
-fun QuestionBody(question : Question){
-    
-    var answers = Singleton.getAnswers(question.id)
-    
+fun QuestionBody(question: Question) {
+
+    val answers = Singleton.getAnswers(question.id)
+
+    var selectedAnswerIndex by remember { mutableStateOf(-1) }
+    var isCorrect by remember { mutableStateOf(false) }
+    var confirmed by remember { mutableStateOf(false) }
+
+
     Column(
 
-        modifier =  Modifier
+        modifier = Modifier
             .padding(10.dp)
             .clip(RoundedCornerShape(20.dp))
             .background(White)
@@ -37,9 +48,8 @@ fun QuestionBody(question : Question){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
-
     ) {
-        
+
         ImageLoader(imageUrl = question.image)
 
         Text(
@@ -52,15 +62,37 @@ fun QuestionBody(question : Question){
 
         )
 
-        answers.forEach { answer ->
+        answers.forEachIndexed { index, answer ->
+
+            val backgroundColor = when {
+
+                confirmed && selectedAnswerIndex == index && answer.isCorrect -> Green
+                confirmed && selectedAnswerIndex == index && !answer.isCorrect -> Red
+                selectedAnswerIndex == index -> White
+                else -> Purple
+
+            }
+
+            val textColor = when {
+
+                confirmed && selectedAnswerIndex == index -> White
+                selectedAnswerIndex == index -> Purple
+                else -> White
+
+            }
 
             Box(
 
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(RoundedCornerShape(10.dp))
-                    .background(Purple)
-                    .size(325.dp, 60.dp),
+                    .border(1.dp, Color.Black)
+                    .background(backgroundColor)
+                    .size(325.dp, 60.dp)
+                    .clickable {
+                        selectedAnswerIndex = index
+                        isCorrect = answer.isCorrect
+                    },
                 contentAlignment = Alignment.CenterStart
 
             ) {
@@ -69,7 +101,7 @@ fun QuestionBody(question : Question){
 
                     text = answer.description,
                     modifier = Modifier.padding(10.dp),
-                    color = White
+                    color = textColor
 
                 )
 
@@ -77,6 +109,15 @@ fun QuestionBody(question : Question){
 
         }
         
+        Button(onClick = {
+
+            confirmed = true
+
+        }) {
+            
+            Text(text = "Confirmar")
+            
+        }
+        
     }
-    
 }
