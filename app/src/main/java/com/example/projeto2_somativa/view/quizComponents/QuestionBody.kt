@@ -27,9 +27,11 @@ import com.example.projeto2_somativa.model.Question
 import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun QuestionBody(question: Question) {
+fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
 
     val answers = Singleton.getAnswers(question.id)
 
@@ -66,8 +68,9 @@ fun QuestionBody(question: Question) {
 
             val backgroundColor = when {
 
-                confirmed && selectedAnswerIndex == index && answer.isCorrect -> Green
                 confirmed && selectedAnswerIndex == index && !answer.isCorrect -> Red
+                confirmed && selectedAnswerIndex == index && answer.isCorrect -> Green
+                confirmed && answer.isCorrect -> Green
                 selectedAnswerIndex == index -> White
                 else -> Purple
 
@@ -111,13 +114,33 @@ fun QuestionBody(question: Question) {
         
         Button(onClick = {
 
-            confirmed = true
+            if(selectedAnswerIndex != -1){
+
+                confirmed = true
+
+            }
 
         }) {
             
             Text(text = "Confirmar")
             
         }
-        
+
+    }
+
+    LaunchedEffect(confirmed) {
+
+        delay(2000)
+
+        if (confirmed) {
+
+            confirmed = false
+            isCorrect = false
+            selectedAnswerIndex = -1
+            onConfirm(isCorrect)
+        }
+
     }
 }
+
+

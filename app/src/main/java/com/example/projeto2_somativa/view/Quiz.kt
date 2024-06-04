@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -29,10 +33,10 @@ import kotlin.random.Random
 fun Quiz(navController: NavController, difficulty : String) {
     
     var lastQuestion = Singleton.getLast()
+    var questions by remember { mutableStateOf(Singleton.getQuestions(difficulty)) }
+    var index by remember { mutableStateOf(getRandomIndex(questions)) }
+    var score by remember { mutableStateOf(0) }
 
-    var questions = Singleton.getQuestions(difficulty)
-    var question = getRandomQuestion(questions)
-    questions.remove(question)
 
 
     Column (
@@ -46,17 +50,29 @@ fun Quiz(navController: NavController, difficulty : String) {
 
     ){
 
-        QuestionBody(question = question)
+        Text(text = score.toString())
+        
+        val question = questions[index]
+        questions.remove(question)
+
+        QuestionBody(question = question) { isCorrect ->
+
+            if (isCorrect) {
+
+                score += 100
+
+            }
+
+            index = getRandomIndex(questions)
+
+        }
 
     }
 
 }
 
-fun getRandomQuestion(questions : MutableList<Question>): Question {
+fun getRandomIndex(questions : MutableList<Question>): Int {
 
-    var index = Random.nextInt(questions.size)
-    var question = questions[index]
-
-    return question
+    return Random.nextInt(questions.size)
 
 }
