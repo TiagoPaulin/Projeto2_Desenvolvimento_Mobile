@@ -31,13 +31,11 @@ import kotlin.random.Random
 
 @Composable
 fun Quiz(navController: NavController, difficulty : String) {
-    
-    var lastQuestion = Singleton.getLast()
+
     var questions by remember { mutableStateOf(Singleton.getQuestions(difficulty)) }
-    var index by remember { mutableStateOf(getRandomIndex(questions)) }
+    var index by remember { mutableStateOf(0) }
     var score by remember { mutableStateOf(0) }
-
-
+    var showResult by remember { mutableStateOf(false) }
 
     Column (
 
@@ -50,29 +48,40 @@ fun Quiz(navController: NavController, difficulty : String) {
 
     ){
 
-        Text(text = score.toString())
-        
-        val question = questions[index]
-        questions.remove(question)
+        if (showResult) {
 
-        QuestionBody(question = question) { isCorrect ->
+            Text(text = "Sua pontuação: " + score)
 
-            if (isCorrect) {
+        } else {
 
-                score += 100
+            Text(text = score.toString())
+
+            if (index < questions.size) {
+
+                val question = questions[index]
+
+                QuestionBody(question = question) { isCorrect ->
+
+                    if (isCorrect) {
+
+                        score += 100
+
+                    }
+
+                    index ++
+
+                    if (index >= questions.size){
+
+                        showResult = true
+
+                    }
+
+                }
 
             }
-
-            index = getRandomIndex(questions)
 
         }
 
     }
-
-}
-
-fun getRandomIndex(questions : MutableList<Question>): Int {
-
-    return Random.nextInt(questions.size)
 
 }

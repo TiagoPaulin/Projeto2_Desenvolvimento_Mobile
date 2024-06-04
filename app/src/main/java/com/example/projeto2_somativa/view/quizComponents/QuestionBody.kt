@@ -135,9 +135,9 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
         if (confirmed) {
 
             confirmed = false
-            isCorrect = false
             selectedAnswerIndex = -1
             onConfirm(isCorrect)
+            isCorrect = false
         }
 
     }
