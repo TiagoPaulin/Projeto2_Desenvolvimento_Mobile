@@ -30,7 +30,7 @@ import com.example.projeto2_somativa.view.quizComponents.QuestionBody
 import kotlin.random.Random
 
 @Composable
-fun Quiz(navController: NavController, difficulty : String) {
+fun Quiz(navController: NavController, difficulty : String, name : String) {
 
     var questions by remember { mutableStateOf(Singleton.getQuestions(difficulty)) }
     var index by remember { mutableStateOf(0) }
@@ -73,6 +73,7 @@ fun Quiz(navController: NavController, difficulty : String) {
                     if (index >= questions.size){
 
                         showResult = true
+                        Singleton.addScore(name, score)
 
                     }
 

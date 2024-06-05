@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ import com.example.projeto2_somativa.view.menuComponents.DifficultySelector
 fun Menu(navController: NavController) {
 
     var difficulty by remember { mutableStateOf("") }
+    var playerName by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -37,7 +39,7 @@ fun Menu(navController: NavController) {
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Purple,
-            modifier = Modifier.padding(bottom = 16.dp) 
+            modifier = Modifier.padding(bottom = 16.dp)
         )
 
         DifficultySelector() { selectedDifficulty ->
@@ -46,14 +48,41 @@ fun Menu(navController: NavController) {
 
         }
 
+        Box(
+
+            modifier = Modifier
+                .size(300.dp, 60.dp)
+
+        )
+        {
+
+            TextField(
+
+                value = playerName,
+                placeholder = { Text(text = "Digite o seu nome")},
+                onValueChange = { name -> playerName = name },
+                modifier = Modifier
+                    .fillMaxSize(),
+                label = { Text(text = "Nome") }
+
+            )
+
+        }
+
         Row(
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
+
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier
+                .padding(20.dp)
+
         ) {
 
             Button(
-                onClick = { navController.navigate(route = "Quiz/${difficulty}") },
+
+                onClick = { navController.navigate(route = "Quiz/${difficulty}/${playerName}") },
                 colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = White),
                 modifier = Modifier.size(150.dp, 55.dp)
+
             ) {
 
                 Text(
@@ -64,9 +93,11 @@ fun Menu(navController: NavController) {
             }
 
             Button(
+
                 onClick = { navController.navigate(route = "LeaderBoard") },
                 colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = White),
                 modifier = Modifier.size(150.dp, 55.dp)
+
             ) {
 
                 Text(

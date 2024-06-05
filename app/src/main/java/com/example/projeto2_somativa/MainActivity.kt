@@ -36,12 +36,20 @@ class MainActivity : ComponentActivity() {
 
                     }
 
-                    composable(route = "Quiz/{difficulty}", arguments = listOf(
+                    composable(route = "Quiz/{difficulty}/{name}", arguments = listOf(
 
                         navArgument("difficulty}") {
 
                             type = NavType.StringType
                             defaultValue = "fácil"
+                            nullable = true
+
+                        },
+
+                        navArgument("name}") {
+
+                            type = NavType.StringType
+                            defaultValue = ""
                             nullable = true
 
                         }
@@ -50,7 +58,13 @@ class MainActivity : ComponentActivity() {
 
                     ) {
 
-                        Quiz(navController, difficulty = it.arguments?.getString("difficulty") ?: "fácil")
+                        Quiz(
+
+                            navController,
+                            difficulty = it.arguments?.getString("difficulty") ?: "fácil",
+                            name = it.arguments?.getString("name") ?: ""
+
+                        )
 
                     }
 
