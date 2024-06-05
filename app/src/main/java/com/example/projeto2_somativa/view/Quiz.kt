@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
@@ -26,6 +27,7 @@ import com.example.projeto2_somativa.model.Question
 import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
+import com.example.projeto2_somativa.view.quizComponents.FinalScore
 import com.example.projeto2_somativa.view.quizComponents.QuestionBody
 import kotlin.random.Random
 
@@ -50,11 +52,17 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
         if (showResult) {
 
-            Text(text = "Sua pontuação: " + score)
+            FinalScore(name = name, score = score, navController = navController)
 
         } else {
 
-            Text(text = score.toString())
+            Text(
+
+                text = "PONTOS: ${score}",
+                fontWeight = FontWeight.Bold,
+                color = White
+
+            )
 
             if (index < questions.size) {
 
@@ -73,7 +81,6 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
                     if (index >= questions.size){
 
                         showResult = true
-                        Singleton.addScore(name, score)
 
                     }
 
