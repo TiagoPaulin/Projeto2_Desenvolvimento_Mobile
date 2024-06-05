@@ -5,6 +5,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -13,9 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.projeto2_somativa.ui.theme.Purple
+import com.example.projeto2_somativa.view.menuComponents.DifficultySelector
 
 @Composable
 fun Menu(navController: NavController) {
+
+    var difficulty by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -32,13 +39,19 @@ fun Menu(navController: NavController) {
             color = Purple,
             modifier = Modifier.padding(bottom = 16.dp) 
         )
-        
+
+        DifficultySelector() { selectedDifficulty ->
+
+            difficulty = selectedDifficulty
+
+        }
+
         Row(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
             Button(
-                onClick = { navController.navigate(route = "Quiz") },
+                onClick = { navController.navigate(route = "Quiz/${difficulty}") },
                 colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = White),
                 modifier = Modifier.size(150.dp, 55.dp)
             ) {

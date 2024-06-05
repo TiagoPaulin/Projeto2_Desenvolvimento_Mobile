@@ -17,18 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Green
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.projeto2_somativa.model.Question
 import com.example.projeto2_somativa.model.Singleton
+import com.example.projeto2_somativa.ui.theme.Green
 import com.example.projeto2_somativa.ui.theme.Purple
+import com.example.projeto2_somativa.ui.theme.Red
 import com.example.projeto2_somativa.ui.theme.White
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
@@ -138,6 +137,7 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
             selectedAnswerIndex = -1
             onConfirm(isCorrect)
             isCorrect = false
+
         }
 
     }

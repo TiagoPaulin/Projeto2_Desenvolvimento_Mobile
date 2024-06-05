@@ -3,9 +3,11 @@ package com.example.projeto2_somativa
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.ui.theme.Projeto2_SomativaTheme
 import com.example.projeto2_somativa.view.LeaderBoard
@@ -34,9 +36,21 @@ class MainActivity : ComponentActivity() {
 
                     }
 
-                    composable(route = "Quiz") {
+                    composable(route = "Quiz/{difficulty}", arguments = listOf(
 
-                        Quiz(navController, "média")
+                        navArgument("difficulty}") {
+
+                            type = NavType.StringType
+                            defaultValue = "fácil"
+                            nullable = true
+
+                        }
+
+                    )
+
+                    ) {
+
+                        Quiz(navController, difficulty = it.arguments?.getString("difficulty") ?: "fácil")
 
                     }
 
