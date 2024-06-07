@@ -66,7 +66,8 @@ fun DifficultySelector(onSelect : (String) -> Unit) {
 
                 },
             label = { Text(text = "Selecione uma dificuldade") },
-            trailingIcon = { Icon(icon, "", Modifier.clickable { isExpanded = !isExpanded } ) }
+            trailingIcon = { Icon(icon, "", Modifier.clickable { isExpanded = !isExpanded } ) },
+            readOnly = true
 
         )
 

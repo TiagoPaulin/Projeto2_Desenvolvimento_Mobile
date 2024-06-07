@@ -1,5 +1,6 @@
 package com.example.projeto2_somativa.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -13,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +24,8 @@ import com.example.projeto2_somativa.view.menuComponents.DifficultySelector
 
 @Composable
 fun Menu(navController: NavController) {
+
+    val context = LocalContext.current
 
     var difficulty by remember { mutableStateOf("") }
     var playerName by remember { mutableStateOf("") }
@@ -79,7 +83,19 @@ fun Menu(navController: NavController) {
 
             Button(
 
-                onClick = { navController.navigate(route = "Quiz/${difficulty}/${playerName}") },
+                onClick = {
+
+                    if (playerName.isNullOrEmpty() || difficulty.isNullOrEmpty()){
+
+                        Toast.makeText(context, "Selecione uma dificuldade e preencha o campo de nome", Toast.LENGTH_SHORT).show()
+
+                    } else {
+
+                        navController.navigate(route = "Quiz/${difficulty}/${playerName}")
+
+                    }
+
+                },
                 colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = White),
                 modifier = Modifier.size(150.dp, 55.dp)
 
