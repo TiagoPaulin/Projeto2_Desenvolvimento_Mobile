@@ -15,15 +15,12 @@ fun Timer(startTimer: Boolean, returnTime: (Int) -> Unit) {
 
     LaunchedEffect(startTimer) {
 
-        var start = startTimer
+        while (time >= 0) {
 
-        while (time > 0) {
-
-            if (!start){
+            if (!startTimer || time == 0){
 
                 time = 30
                 returnTime(time)
-                start = true
 
             }
 

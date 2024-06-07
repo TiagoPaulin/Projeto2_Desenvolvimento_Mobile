@@ -72,6 +72,18 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                     questionTime = time
 
+                    if (time == 0) {
+
+                        index++
+
+                        if (index >= questions.size) {
+
+                            showResult = true
+
+                        }
+
+                    }
+
                 }
 
                 Text(
