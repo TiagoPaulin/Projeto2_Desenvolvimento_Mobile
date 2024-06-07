@@ -129,9 +129,10 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
 
     LaunchedEffect(confirmed) {
 
-        delay(2000)
 
         if (confirmed) {
+
+            delay(1000)
 
             confirmed = false
             selectedAnswerIndex = -1
@@ -141,6 +142,7 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
         }
 
     }
+
 }
 
 

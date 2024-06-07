@@ -1,13 +1,11 @@
 package com.example.projeto2_somativa.view
 
-import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,19 +15,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
-import com.bumptech.glide.Glide
-import com.example.projeto2_somativa.R
-import com.example.projeto2_somativa.model.Answer
-import com.example.projeto2_somativa.model.Question
 import com.example.projeto2_somativa.model.Singleton
 import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
 import com.example.projeto2_somativa.view.quizComponents.FinalScore
 import com.example.projeto2_somativa.view.quizComponents.QuestionBody
-import kotlin.random.Random
+import com.example.projeto2_somativa.view.quizComponents.Timer
+
 
 @Composable
 fun Quiz(navController: NavController, difficulty : String, name : String) {
@@ -38,6 +33,8 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
     var index by remember { mutableStateOf(0) }
     var score by remember { mutableStateOf(0) }
     var showResult by remember { mutableStateOf(false) }
+    var startTimer by remember { mutableStateOf(true) }
+    var questionTime by remember { mutableStateOf(30) }
 
     Column (
 
@@ -56,13 +53,37 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
         } else {
 
-            Text(
+            Row (
 
-                text = "PONTOS: ${score}",
-                fontWeight = FontWeight.Bold,
-                color = White
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
 
-            )
+            ){
+
+                Text(
+
+                    text = "PONTOS: ${score}",
+                    fontWeight = FontWeight.Bold,
+                    color = White,
+                    textAlign = TextAlign.Left
+
+                )
+
+                Timer(startTimer) {time ->
+
+                    questionTime = time
+
+                }
+
+                Text(
+
+                    text = questionTime.toString(),
+                    fontWeight = FontWeight.Bold,
+                    color = White,
+                    textAlign = TextAlign.Right
+
+                )
+
+            }
 
             if (index < questions.size) {
 
@@ -70,9 +91,12 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                 QuestionBody(question = question) { isCorrect ->
 
+                    startTimer = false
+
                     if (isCorrect) {
 
-                        score += 100
+                        val multiplier = (questionTime / 10.0f)
+                        score += (100 * multiplier).toInt()
 
                     }
 
@@ -85,6 +109,8 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
                     }
 
                 }
+
+                startTimer = true
 
             }
 
