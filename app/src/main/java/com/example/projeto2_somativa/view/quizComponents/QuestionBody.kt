@@ -1,5 +1,7 @@
 package com.example.projeto2_somativa.view.quizComponents
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,14 +32,29 @@ import com.example.projeto2_somativa.ui.theme.White
 import kotlinx.coroutines.delay
 
 @Composable
-fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
+fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
 
     val answers = Singleton.getAnswers(question.id)
 
     var selectedAnswerIndex by remember { mutableStateOf(-1) }
     var isCorrect by remember { mutableStateOf(false) }
     var confirmed by remember { mutableStateOf(false) }
+    var visibleAnswers by remember { mutableStateOf(emptyList<Boolean>()) }
 
+    LaunchedEffect(question) {
+
+        visibleAnswers = List(answers.size) { false }
+        answers.forEachIndexed { index, _ ->
+
+            delay(500) // Delay entre cada alternativa
+            visibleAnswers = visibleAnswers.toMutableList().apply {
+                this[index] = true
+
+            }
+
+        }
+
+    }
 
     Column(
 
@@ -54,7 +71,6 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
         ImageLoader(imageUrl = question.image)
 
         Text(
-
             text = question.description,
             fontWeight = FontWeight.Bold,
             fontSize = 17.sp,
@@ -66,7 +82,6 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
         answers.forEachIndexed { index, answer ->
 
             val backgroundColor = when {
-
                 confirmed && selectedAnswerIndex == index && !answer.isCorrect -> Red
                 confirmed && selectedAnswerIndex == index && answer.isCorrect -> Green
                 confirmed && answer.isCorrect -> Green
@@ -83,57 +98,66 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
 
             }
 
-            Box(
+            AnimatedVisibility(
 
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .border(1.dp, Color.Black)
-                    .background(backgroundColor)
-                    .size(325.dp, 60.dp)
-                    .clickable {
-                        selectedAnswerIndex = index
-                        isCorrect = answer.isCorrect
-                    },
-                contentAlignment = Alignment.CenterStart
+                visible = visibleAnswers.getOrElse(index) { false },
+                enter = slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth }
+                )
 
             ) {
 
-                Text(
+                Box(
 
-                    text = answer.description,
-                    modifier = Modifier.padding(10.dp),
-                    color = textColor
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .border(1.dp, Color.Black)
+                        .background(backgroundColor)
+                        .size(325.dp, 60.dp)
+                        .clickable {
+                            if (!confirmed) {
+                                selectedAnswerIndex = index
+                                isCorrect = answer.isCorrect
+                            }
+                        },
+                    contentAlignment = Alignment.CenterStart
 
-                )
+                ) {
+
+                    Text(
+
+                        text = answer.description,
+                        modifier = Modifier.padding(10.dp),
+                        color = textColor
+
+                    )
+
+                }
 
             }
 
         }
-        
+
         Button(onClick = {
 
-            if(selectedAnswerIndex != -1){
-
+            if (selectedAnswerIndex != -1) {
                 confirmed = true
-
             }
 
         }) {
-            
+
             Text(text = "Confirmar")
-            
+
         }
 
     }
 
     LaunchedEffect(confirmed) {
 
-
         if (confirmed) {
 
             delay(1000)
-
             confirmed = false
             selectedAnswerIndex = -1
             onConfirm(isCorrect)
@@ -142,7 +166,5 @@ fun QuestionBody(question: Question, onConfirm : (Boolean) -> Unit) {
         }
 
     }
-
+    
 }
-
-
