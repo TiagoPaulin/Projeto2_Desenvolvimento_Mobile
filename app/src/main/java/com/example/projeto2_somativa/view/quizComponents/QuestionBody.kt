@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,13 +33,14 @@ import com.example.projeto2_somativa.ui.theme.White
 import kotlinx.coroutines.delay
 
 @Composable
-fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
+fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit, startTimer: (Boolean) -> Unit) {
 
     val answers = Singleton.getAnswers(question.id)
 
     var selectedAnswerIndex by remember { mutableStateOf(-1) }
     var isCorrect by remember { mutableStateOf(false) }
     var confirmed by remember { mutableStateOf(false) }
+    var start by remember { mutableStateOf(false) }
     var visibleAnswers by remember { mutableStateOf(emptyList<Boolean>()) }
 
     LaunchedEffect(question) {
@@ -46,13 +48,16 @@ fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
         visibleAnswers = List(answers.size) { false }
         answers.forEachIndexed { index, _ ->
 
-            delay(500) // Delay entre cada alternativa
+            delay(500)
             visibleAnswers = visibleAnswers.toMutableList().apply {
                 this[index] = true
 
             }
 
         }
+
+        start = true
+        startTimer(start)
 
     }
 
@@ -110,11 +115,11 @@ fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
                 Box(
 
                     modifier = Modifier
-                        .padding(10.dp)
+                        .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .border(1.dp, Color.Black)
                         .background(backgroundColor)
-                        .size(325.dp, 60.dp)
+                        .size(325.dp, 65.dp)
                         .clickable {
                             if (!confirmed) {
                                 selectedAnswerIndex = index
@@ -139,13 +144,19 @@ fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
 
         }
 
-        Button(onClick = {
+        Button(
 
-            if (selectedAnswerIndex != -1) {
-                confirmed = true
-            }
+            onClick = {
+                if (selectedAnswerIndex != -1) {
+                    confirmed = true
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = Color.White),
+            modifier = Modifier
+                .size(300.dp, 50.dp)
+                .padding(top = 10.dp, bottom = 5.dp)
 
-        }) {
+        ) {
 
             Text(text = "Confirmar")
 
@@ -157,6 +168,8 @@ fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
 
         if (confirmed) {
 
+            start = false
+            startTimer(start)
             delay(1000)
             confirmed = false
             selectedAnswerIndex = -1
@@ -166,5 +179,5 @@ fun QuestionBody(question: Question, onConfirm: (Boolean) -> Unit) {
         }
 
     }
-    
+
 }

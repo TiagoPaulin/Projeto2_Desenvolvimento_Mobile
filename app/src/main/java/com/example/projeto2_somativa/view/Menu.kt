@@ -1,11 +1,17 @@
 package com.example.projeto2_somativa.view
 
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,15 +19,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.projeto2_somativa.ui.theme.Black
 import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.view.menuComponents.DifficultySelector
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Menu(navController: NavController) {
 
@@ -31,19 +40,33 @@ fun Menu(navController: NavController) {
     var playerName by remember { mutableStateOf("") }
 
     Column(
+
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
 
         Text(
-            text = "Welcome to the Quiz!",
+
+            text = "Bem-vindo ao Quiz!",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = Purple,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 10.dp)
+
+        )
+
+        Text(
+
+            text = "Tema: Conhecimentos Gerais",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Purple,
+            modifier = Modifier.padding(bottom = 50.dp)
+
         )
 
         DifficultySelector() { selectedDifficulty ->
@@ -56,6 +79,7 @@ fun Menu(navController: NavController) {
 
             modifier = Modifier
                 .size(300.dp, 60.dp)
+                .padding(top = 10.dp)
 
         )
         {
@@ -66,7 +90,10 @@ fun Menu(navController: NavController) {
                 placeholder = { Text(text = "Digite o seu nome")},
                 onValueChange = { name -> playerName = name },
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(5.dp))
+                    .border(1.dp, Black),
+                colors = TextFieldDefaults.textFieldColors(containerColor = White),
                 label = { Text(text = "Nome") }
 
             )
@@ -77,7 +104,7 @@ fun Menu(navController: NavController) {
 
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
-                .padding(20.dp)
+                .padding(top = 70.dp)
 
         ) {
 

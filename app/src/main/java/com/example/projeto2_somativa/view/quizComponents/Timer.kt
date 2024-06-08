@@ -17,15 +17,18 @@ fun Timer(startTimer: Boolean, returnTime: (Int) -> Unit) {
 
         while (time >= 0) {
 
+            delay(1000)
+
             if (!startTimer || time == 0){
 
                 time = 30
-                returnTime(time)
+
+            } else {
+
+                time--
 
             }
 
-            delay(1000)
-            time--
             returnTime(time)
 
         }

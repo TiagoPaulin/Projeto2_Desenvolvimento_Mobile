@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,10 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.projeto2_somativa.ui.theme.Purple
 import com.example.projeto2_somativa.ui.theme.White
 
 @Composable
-fun Board(topTen: List<Score>) {
+fun Board(topTen: List<Score>, navController: NavController) {
 
     Column(
 
@@ -32,7 +37,8 @@ fun Board(topTen: List<Score>) {
             .padding(20.dp)
             .clip(RoundedCornerShape(30.dp))
             .background(White)
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .wrapContentHeight(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
 
@@ -42,7 +48,7 @@ fun Board(topTen: List<Score>) {
 
             text = "Top 10 pontuadores",
             modifier = Modifier
-                .padding(15.dp, 20.dp),
+                .padding(15.dp, 10.dp),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -54,7 +60,7 @@ fun Board(topTen: List<Score>) {
 
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
+                .padding(start = 15.dp, end = 15.dp, top = 10.dp, bottom = 10.dp)
 
         ) {
 
@@ -84,19 +90,19 @@ fun Board(topTen: List<Score>) {
 
         }
 
-        topTen.forEach { score ->
+        topTen.forEachIndexed { index, score ->
 
             Row(
 
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp)
+                    .padding(start = 15.dp, end = 15.dp, top = 10.dp, bottom = 10.dp)
 
             ) {
 
                 Text(
 
-                    text = score.name,
+                    text = "${index + 1}. " + score.name,
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 25.dp, end = 10.dp),
@@ -117,6 +123,20 @@ fun Board(topTen: List<Score>) {
                 )
 
             }
+
+        }
+
+        Button(
+
+            onClick = { navController.navigate("Menu") },
+            colors = ButtonDefaults.buttonColors(containerColor = Purple, contentColor = Color.White),
+            modifier = Modifier
+                .size(300.dp, 50.dp)
+                .padding(top = 10.dp, bottom = 5.dp)
+
+        ) {
+
+            Text(text = "OK")
 
         }
 

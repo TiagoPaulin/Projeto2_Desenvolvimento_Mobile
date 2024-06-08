@@ -33,7 +33,7 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
     var index by remember { mutableStateOf(0) }
     var score by remember { mutableStateOf(0) }
     var showResult by remember { mutableStateOf(false) }
-    var startTimer by remember { mutableStateOf(true) }
+    var startTimer by remember { mutableStateOf(false) }
     var questionTime by remember { mutableStateOf(30) }
 
     Column (
@@ -74,6 +74,7 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                     if (time == 0) {
 
+                        startTimer = false
                         index++
 
                         if (index >= questions.size) {
@@ -88,7 +89,7 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                 Text(
 
-                    text = questionTime.toString(),
+                    text = "TEMPO: ${questionTime}",
                     fontWeight = FontWeight.Bold,
                     color = White,
                     textAlign = TextAlign.Right
@@ -101,9 +102,7 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                 val question = questions[index]
 
-                QuestionBody(question = question) { isCorrect ->
-
-                    startTimer = false
+                QuestionBody(question = question, { isCorrect ->
 
                     if (isCorrect) {
 
@@ -120,9 +119,11 @@ fun Quiz(navController: NavController, difficulty : String, name : String) {
 
                     }
 
-                }
+                }, {start ->
 
-                startTimer = true
+                    startTimer = start
+
+                })
 
             }
 
